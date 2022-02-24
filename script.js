@@ -1,5 +1,6 @@
-let displayValue = "0";
-let secondValue = "0";
+let displayValue = "0"
+let accumulator = 0;
+let operand = 0;
 let operator = null;
 
 function add(x, y) {
@@ -23,12 +24,50 @@ function operate(x, y, operator) {
 }
 
 function clickOperand(e) {
-    if (displayValue === "0") {
+    // operand being equal to null indicates that the user last clicked 
+    // an operator button meaning that if they type in more numbers, we should 
+    // overwrite the displayed value
+    if (displayValue === "0" || operand === null) {
         displayValue = this.value;
     } else {
         displayValue += this.value;
     }
     updateDisplay();
+    // keep operand value updated
+    operand = parseFloat(displayValue);
+}
+
+function clickOperator(e) {
+    // first calculate the previous operation, if any
+    if (operator)
+        accumulator = operate(accumulator, operand, operator);
+    // if there is no operator, move the operand value into the accumulator, if not null
+    else if (operand)
+        accumulator = operand;
+    // then set the new operator
+    switch (this.value) {
+        case "+":
+            operator = add;
+            break;
+        case "-":
+            operator = subtract;
+            break;
+        case "*":
+            operator = multiply;
+            break;
+        case "/":
+            operator = divide;
+            break;
+        case "=":
+            operator = null;
+            break;
+    }
+    // update display with accumulator
+    displayValue = accumulator.toString();
+    updateDisplay();
+    // set operand to null to specify that the next number button clicked is
+    // the start of a new operand
+    operand = null; 
 }
 
 function updateDisplay() {
@@ -38,13 +77,21 @@ function updateDisplay() {
 
 function clear(e) {
     displayValue = "0";
-    secondValue = "0";
+    accumulator = 0;
+    operand = 0;
     operator = null;
     updateDisplay();
 }
 
+// add functions to all the buttons
 const operandButtons = document.querySelectorAll('.operand');
 operandButtons.forEach(button => button.addEventListener('click', clickOperand));
+const operatorButtons = document.querySelectorAll('.operator');
+operatorButtons.forEach(button => button.addEventListener('click', clickOperator));
+const equalsButton = document.querySelector('.equals');
+equalsButton.addEventListener('click', clickOperator);
 const clearButton = document.getElementById('clear');
 clearButton.addEventListener('click', clear);
-updateDisplay();
+
+// start fresh
+clear();
