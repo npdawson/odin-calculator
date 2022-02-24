@@ -71,6 +71,20 @@ function clickOperator(e) {
 }
 
 function updateDisplay() {
+    if (displayValue.length > 10) {
+        // TODO: add conversion to scientific notation when necessary
+        // calculate how many digits we need to remove
+        let lengthToRemove = displayValue.length - 10;
+        const split = displayValue.split('.');
+        if (split[1]) {
+            // reduce the fraction to the desired number of digits 
+            let newFraction = Math.round(parseInt(split[1]) / 10 ** lengthToRemove).toString();
+            displayValue = [split[0], newFraction].join('.');
+        } else {
+            // if the number is too big, prevent it from leaving the display
+            displayValue = Math.floor(parseInt(displayValue) / 10 ** lengthToRemove).toString();
+        }
+    }
     const display = document.querySelector('#display');
     display.textContent = displayValue;
 }
