@@ -37,6 +37,15 @@ function clickOperand(e) {
     operand = parseFloat(displayValue);
 }
 
+function clickDecimal(e) {
+    if (displayValue.includes(".")) {
+        // if we already have a decimal point, then we disable the button.
+        return;
+    }
+    displayValue += this.value;
+    updateDisplay();
+}
+
 function clickOperator(e) {
     // first calculate the previous operation, if any
     if (operator)
@@ -102,6 +111,8 @@ const operandButtons = document.querySelectorAll('.operand');
 operandButtons.forEach(button => button.addEventListener('click', clickOperand));
 const operatorButtons = document.querySelectorAll('.operator');
 operatorButtons.forEach(button => button.addEventListener('click', clickOperator));
+const decimalButton = document.querySelectorAll('.decimal');
+decimalButton.forEach(button => button.addEventListener('click', clickDecimal));
 const equalsButton = document.querySelector('.equals');
 equalsButton.addEventListener('click', clickOperator);
 const clearButton = document.getElementById('clear');
