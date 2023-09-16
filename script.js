@@ -42,7 +42,14 @@ function clickDecimal(e) {
         // if we already have a decimal point, then we disable the button.
         return;
     }
-    displayValue += this.value;
+    if (operand === null) {
+        // if building a new operand, add a zero before the decimal point
+        displayValue = "0.";
+        // and set the operand to not be null
+        operand = 0;
+    } else {
+        displayValue += this.value;
+    }
     updateDisplay();
 }
 
