@@ -1,6 +1,6 @@
 # TODO list
 - convert to scientific notation for displaying large numbers
-- add code for decimal button
+- ~~add code for decimal button~~
 - add +/- button
 - add % button
 - add backspace
